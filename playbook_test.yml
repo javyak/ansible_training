@@ -1,0 +1,25 @@
+---
+- name: Execute show arp on IOS
+  gather_facts: no
+  hosts: ios
+  tasks:
+    - raw: "show ip arp"
+      register: result
+    - debug: var=result.stdout_lines
+
+- name: Execute show arp on EOS
+  gather_facts: no
+  hosts: eos
+  tasks:
+    - raw: "show ip arp"
+      register: result
+    - debug: var=result.stdout_lines
+
+- name: Execute show ip interface on all
+  gather_facts: no
+  hosts: all
+  tasks: 
+    - raw: "show ip interface"
+      register: result
+    - debug: var=result.stdout_lines
+
