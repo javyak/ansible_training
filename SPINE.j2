@@ -13,7 +13,7 @@ router bgp {{BGP.ASN}}
  maximum-paths 32 ecmp 32
 {% for interface in interfaces %}
  {% if interface.name == 'loopback0' %}
-   router-id {{interfaces.ip_address}}
+   router-id {{interface.ip_address}}
  {% elif interface.description == 'downlink' %}
    bgp listen range {{interface.ip_address}}/24 peer-group ARISTA remote-as {{BGP.arista_asn}}
  {% elif interface.description == 'uplink' %}

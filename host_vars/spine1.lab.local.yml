@@ -22,6 +22,6 @@ interfaces:
 BGP:
   ASN: 65100
   arista_password: arista
-  cisco_pasword: cisco
+  cisco_password: cisco
   arista_asn: 65101
   cisco_asn: 65001

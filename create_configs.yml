@@ -13,5 +13,5 @@
   gather_facts: no
   hosts: all
   tasks:     
-    - template: src={{ansible_device_type}}.j2 dst={{configs}}/{{inventory_hostname}}.txt
+    - template: src={{ansible_device_type}}.j2 dest=configs/{{inventory_hostname}}.txt
 

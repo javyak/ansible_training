@@ -10,7 +10,7 @@ lldp run
 router bgp {{ASN}}
 {% for interface in interfaces %}
  {% if interface.name == 'loopback0' %}
-   bgp router-id {{interfaces.ip_address}}
+   bgp router-id {{interface.ip_address}}
  {% endif %}
  bgp log-neighbor-changes
  network {{interface.ip_address}} mask {{interface.mask}}
