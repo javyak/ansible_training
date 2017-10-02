@@ -1,4 +1,5 @@
 ---
+ansible_device_type: LEAF
 hostname: Leaf-01
 location: 1HQ_DC_Rack101
 leaf_id: '001'

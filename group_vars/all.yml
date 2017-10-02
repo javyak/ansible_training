@@ -1,4 +1,10 @@
 ---
 ansible_user: ansible
 ansible_ssh_pass: abc123
+syslog: 10.10.10.10
+domain: netlab.local
+ntp: 10.10.10.10
+timezone: CET
+snmp_ro: public
+
 

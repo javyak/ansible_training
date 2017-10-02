@@ -1,4 +1,5 @@
 ---
+ansible_device_type: WAN_Router
 location: HQ_DC_Rack5
 hostname: R1
 interfaces:
