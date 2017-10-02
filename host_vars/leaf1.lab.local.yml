@@ -1,3 +1,44 @@
 ---
-location: HQ_DC_Rack101
+hostname: Leaf-01
+location: 1HQ_DC_Rack101
+leaf_id: '001'
+interfaces:
+  - name: loopback0
+    type: routed
+    ip_address: 1.1.1.11
+    mask_length: 24 
+  - name: Ethernet1
+    type: switched
+    mode: access
+    vlan: 101
+  - name: Ethernet2
+    type: routed
+    ip_address: 192.168.3.0
+    mask_length: 31
+  - name: Ethernet3
+    type: routed
+    ip_address: 192.168.4.0
+    mask_length: 31
+  - name: vlan100
+    type: svi
+    ip_address: 192.168.100.2
+    mask_length: 24
+    varp: 192.168.100.1
+  - name: vlan101
+    type: svi    
+    ip_address: 192.168.101.2
+    varp: 192.168.101.1
+    mask_length: 24
+vlans:
+  - name: Srv_mgmt
+    id: 100
+  - name: Production
+    id: 101
+BGP:
+  ASN: 65101
+  neighbors: 
+    - 192.168.2.1
+    - 192.168.3.1
+  remote_ASN: 65100
+  password: arista
 
