@@ -1,0 +1,36 @@
+hostname {{hostname}}
+lldp run
+!
+{% for interface in interfaces %}
+ interface {{interface.name}}
+ ip address {{interface.ip_address}} {{interface.mask}}
+ no shutdown
+{% endfor %}
+!
+router bgp {{ASN}}
+{% for interface in interfaces %}
+ {% if interface.name == 'loopback0' %}
+   bgp router-id {{interfaces.ip_address}}
+ {% endif %}
+ bgp log-neighbor-changes
+ network {{interface.ip_address}} mask {{interface.mask}}
+{% endfor %}
+{% for router in neighbors %}
+ neighbor {{router.ip_address}} remote-as {{router.ASN}}
+ neighbor {{router.ip_address}} password {{router.password}}
+{% endfor %}
+!
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+!
+clock timezone {{timezone}} 1 0
+clock summer-time CEST recurring last Sun Mar 2:00 last Sun Oct 3:00
+!
+ntp server {{ntp}}
+!
+ip domain name {{domain}}
+!
+logging host {{syslog}}
+!
+snmp-server community {{snmp_ro}} RO
+snmp-server location {{location}}

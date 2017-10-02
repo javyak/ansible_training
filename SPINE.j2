@@ -1,0 +1,41 @@
+hostname {{hostname}}
+ip routing
+{% for interface in interfaces %}
+ interface {{interface.name}}
+   no switchport
+   ip address {{interface.ip_address}}/{{interface.mask_length}}
+   no shutdown
+{% endfor %}
+!
+router bgp {{BGP.ASN}}
+ bgp log-neighbor-changes
+ distance bgp 20 200 200
+ maximum-paths 32 ecmp 32
+{% for interface in interfaces %}
+ {% if interface.name == 'loopback0' %}
+   router-id {{interfaces.ip_address}}
+ {% elif interface.description == 'downlink' %}
+   bgp listen range {{interface.ip_address}}/24 peer-group ARISTA remote-as {{BGP.arista_asn}}
+ {% elif interface.description == 'uplink' %}
+   bgp listen range {{interface.ip_address}}/24 peer-group CISCO remote-as {{BGP.cisco_asn}}
+ {% endif %}
+ network {{interface.ip_address}}/{{interface.mask_length}}
+{% endfor %}
+ neighbor ARISTA peer-group
+ neighbor ARISTA fall-over bfd
+ neighbor ARISTA password {{BGP.arista_password}}
+ neighbor ARISTA maximum-routes 12000
+ neighbor CISCO peer-group
+ neighbor CISCO fall-over bfd
+ neighbor CISCO password {{BGP.cisco_password}}
+ neighbor CISCO maximum-routes 12000
+!
+snmp-server location {{location}}
+snmp-server community {{snmp_ro}} ro
+!
+logging host {{syslog}}
+!
+ip domain-name {{domain}}
+!
+ntp server {{ntp}}
+clock timezone {{timezone}}
