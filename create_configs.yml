@@ -1,7 +1,6 @@
 ---
-- name: create configuration directory
-  connection: local
-  gather_facts: no
+- hosts: localhost
+  name: create configuration directory
   tasks:
     - file: path=configs state=absent
       run_once: true
