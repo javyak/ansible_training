@@ -1,0 +1,64 @@
+{# Create the router configuration for node specified in the node
+attribute. Use macros to generate fabric interface configuration. #}
+
+{% for router in nodes %}
+hostname {{ router.name}}
+interface loopback 0
+ip address {{ router.rid}} 255.255.255.255
+!
+interface GigabitEthernet0/0
+ip address {{ router.mgmt}} ! use mask 255.255.255.0 when mask is not specified
+!
+! for every fabric interface
+interface <port>
+ip address <ip> 255.255.255.252
+no shutdown
+ip ospf 1 area 0
+!
+router ospf 1
+router-id <rid>
+
+
+hostname {{hostname}}
+!
+interface loopback 0
+  ip address {{loopback}} 255.255.255.255
+!
+router bgp {{asn}}
+{% for router in neighbors %}
+  {% if router.state is not defined %}
+    no neighbor {{router.ip_address}}
+  {% else %}
+    neighbor {{router.ip_address}} remote-as {{router.ASN}}
+    neighbor {{router.ip_address}} description {{router.description}}
+    {% if router.policy is defined %}
+      neighbor {{router.ip_address}} route-map {{router.policy}} in
+    {% endif %}
+    {% if router.prefixes is defined %}
+      neighbor {{router.ip_address}} prefix-list bgp-neighbor-{{router.ip_address}} in
+    {% endif %}
+    {% if router.state == 'down' %}
+      neighbor {{router.ip_address}} shutdown
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% for router in routers %}
+  {% if router.prefixes is defined %}
+    {% set count = 10 %}
+    {% for prefix in router.prefixes %}
+      ip prefix-list bgp-neighbor-{{router.ip_address}} seq {{count}} permit {{prefix}}
+      {% set count = count + 10 %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+
+{% for interface in interfaces %}
+  interface {{interface.name}}
+    ip address {{interface.address}}
+{% endfor %}
+
+{% if banner is defined %}
+banner motd #
+<banner>
+{% endif %}

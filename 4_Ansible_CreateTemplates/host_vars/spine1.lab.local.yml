@@ -1,0 +1,27 @@
+---
+ansible_device_type: SPINE
+hostname: Spine-01
+location: HQ_DC_Rack10
+interfaces:
+  - name: loopback0
+    ip_address: 1.1.1.11
+    mask_length: 32
+    description: loobpack 
+  - name: Ethernet1
+    ip_address: 192.168.2.1
+    mask_length: 31
+    description: uplink
+  - name: Ethernet2
+    ip_address: 192.168.3.0
+    mask_length: 31
+    description: downlink
+  - name: Ethernet3
+    ip_address: 192.168.4.0
+    mask_length: 31
+    description: downlink
+BGP:
+  ASN: 65100
+  arista_password: arista
+  cisco_password: cisco
+  arista_asn: 65101
+  cisco_asn: 65001

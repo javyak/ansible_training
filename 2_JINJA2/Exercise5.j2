@@ -1,0 +1,11 @@
+{# Using the list of users created in YAML exercise #5 create a local user
+database for a Cisco IOS router. Use privilege level 2 for users without
+privilege attribute. #}
+
+{% for user in users %}
+username {{user.username}} password {{user.password}}
+username {{user.username}} priviledge {{user.priviledge|default(2)}}
+{% if user.autocommand is defined %}
+username {{user.username}} autocommand {{user.autocommand}}
+{% endif %}
+{% endfor %}

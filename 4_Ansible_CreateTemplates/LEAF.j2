@@ -1,0 +1,64 @@
+hostname {{ hostname }}
+ip routing
+!
+{% for vlan in vlans %}
+ vlan {{vlan.id}}
+ name VLAN_{{vlan.name}}
+{% endfor %}
+!
+{% for interface in interfaces %}
+ interface {{interface.name}}
+ {% if interface.type == 'routed' %}
+   no swichtport
+   ip address {{interface.ip_address}}/{{interface.mask_length}}
+ {% elif interface.type == 'svi' %}
+   ip address {{interface.ip_address}}/{{interface.mask_length}}
+   ip virtual-router address {{interface.varp}}
+ {% elif interface.type == 'switched' %}  
+   switchport
+   switchport mode {{interface.mode}}
+   {% if interface.mode == 'access' %}
+     switchport access vlan {{interface.vlan}}
+   {% elif interface.mode == 'trunk' %}
+     switchport mode trunk
+   {% endif %}
+ {% endif %}
+   no shutdown
+{% endfor %}
+!
+!
+route-map BGP_PREPEND permit 10
+   set as-path prepend 65{{leaf_id}}
+!
+router bgp {{BGP.ASN}}
+ bgp log-neighbor-changes
+ distance bgp 20 200 200
+ maximum-paths 32 ecmp 32
+ neighbor ARISTA peer-group
+ neighbor ARISTA remote-as {{BGP.remote_ASN}}
+ neighbor ARISTA fall-over bfd
+ neighbor ARISTA allowas-in 1
+ neighbor ARISTA route-map BGP_PREPEND out
+ neighbor ARISTA password {{BGP.password}}
+ neighbor ARISTA maximum-routes 12000
+{% for router in BGP.neighbors %}
+ neighbor {{router}} peer-group ARISTA
+{% endfor %}
+{% for interface in interfaces %}
+ {% if interface.name == 'loopback0' %}
+   bgp router-id {{interface.ip_address}}
+ {% endif %}
+ {% if interface.type != 'switched' %}
+   network {{interface.ip_address}}/{{interface.mask_length}}
+ {% endif %}
+{% endfor %}
+!
+snmp-server location {{location}}
+snmp-server community {{snmp_ro}} ro
+!
+logging host {{syslog}}
+!
+ip domain-name {{domain}}
+!
+ntp server {{ntp}}
+clock timezone {{timezone}}

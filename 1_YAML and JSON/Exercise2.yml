@@ -1,0 +1,8 @@
+# Create a dictionary containing hostname (a string), loopback (an IP address), and interfaces (a list of strings).
+---
+hostname: R1
+loopback: 192.168.0.1
+interfaces:
+   - eth1
+   - eth2
+   - eth3

@@ -1,0 +1,20 @@
+---
+ansible_device_type: WAN_Router
+location: HQ_DC_Rack5
+hostname: R1
+interfaces:
+  - name: loopback0
+    ip_address: 1.1.1.1
+    mask: 255.255.255.255
+  - name: GigabitEthernet2
+    ip_address: 192.168.2.0
+    mask: 255.255.255.254
+  - name: GigabitEthernet2
+    ip_address: 192.168.1.0
+    mask: 255.255.255.254
+neighbors:
+  - ip_address: 192.168.2.1
+    ASN: 65100
+    password: cisco
+ASN: 65001
+

@@ -1,0 +1,7 @@
+{# Using a list of username/password pairs created in YAML exercise #4
+create a local user database for a Cisco IOS router: #}
+
+{% for user in users %}
+user {{user.username}} password {{user.password}}
+{% endfor %}
+

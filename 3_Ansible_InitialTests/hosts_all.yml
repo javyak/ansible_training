@@ -1,0 +1,14 @@
+# List of all hosts for Ansible testing
+
+[ios]
+10.10.10.11
+10.10.10.12
+10.10.10.15
+
+[eos]
+10.10.10.13
+10.10.10.14
+
+[all:vars]
+ansible_user = ansible
+ansible_ssh_pass = abc123

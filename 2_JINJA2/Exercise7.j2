@@ -1,0 +1,32 @@
+{# Using the list of BGP neighbors created in YAML exercise #6 create Cisco
+IOS BGP router configuration: #}
+{# Create BGP neighbor configuration as above, adding prefix lists where
+necessary: #}
+
+router bgp 64000
+{% for router in routers %}
+  {% if router.state is not defined %}
+    no neighbor {{router.ip_address}}
+  {% else %}
+    neighbor {{router.ip_address}} remote-as {{router.ASN}}
+    neighbor {{router.ip_address}} description {{router.description}}
+    {% if router.policy is defined %}
+      neighbor {{router.ip_address}} route-map {{router.policy}} in
+    {% endif %}
+    {% if router.prefixes is defined %}
+      neighbor {{router.ip_address}} prefix-list bgp-neighbor-{{router.ip_address}} in
+    {% endif %}
+    {% if router.state == 'down' %}
+      neighbor {{router.ip_address}} shutdown
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% for router in routers %}
+  {% if router.prefixes is defined %}
+    {% set count = 10 %}
+    {% for prefix in router.prefixes %}
+      ip prefix-list bgp-neighbor-{{router.ip_address}} seq {{count}} permit {{prefix}}
+      {% set count = count + 10 %}
+    {% endfor %}
+  {% endif %}
+{% endfor %}

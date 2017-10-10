@@ -1,0 +1,15 @@
+{
+  "hostname": "R1",
+  "loopback": "192.168.0.1",
+  "asn": 64512,
+  "interfaces": [
+    {"name": "eth0", "address": "10.0.0.1/30"},
+    {"name": "eth1", "address": "10.0.1.1/30"},
+    {"name": "eth2", "address": "10.0.2.1/30"}
+  ],
+  "neighbors": [
+    {"ip_address": "10.0.0.2", "description": "R2", "ASN": 64521, "state": "present"},
+    {"ip_address": "10.0.1.2", "description": "R3", "ASN": 64521},
+    {"ip_address": "10.0.2.2", "description": "R4", "ASN": 64521, "policy": "R4_in"}
+  ]
+}

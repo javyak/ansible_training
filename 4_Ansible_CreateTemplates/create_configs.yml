@@ -1,0 +1,17 @@
+---
+- hosts: localhost
+  name: create configuration directory
+  tasks:
+    - file: path=configs state=absent
+      run_once: true
+
+    - file: path=configs state=directory
+      run_once: true
+
+- name: create configuration files for WAN routers
+  connection: local
+  gather_facts: no
+  hosts: all
+  tasks:     
+    - template: src={{ansible_device_type}}.j2 dest=configs/{{inventory_hostname}}.txt
+

@@ -1,0 +1,17 @@
+# Create a list of BGP neighbors having:
+# Mandatory: address (IP address), description (string) and asn
+# Optional: state (present, absent or down) and policy (route map name)
+---
+routers:
+- ip_address: 10.0.1.1
+  description: R1
+  ASN: 64521
+- ip_address: 10.0.2.1
+  description: R2
+  ASN: 64522
+  state: present
+- ip_address: 10.0.3.1
+  description: R3
+  ASN: 64523
+  policy: R3_in
+

@@ -1,0 +1,12 @@
+{# Using a dictionary created in YAML exercise #1 that contains hostname loopback and banner, create the following router configuration. Skip the banner configuration if the banner attribute is not defined. #}
+
+hostname {{hostname}}
+!
+interface loopback 0
+ip address {{loopback}} 255.255.255.255
+!
+{% if banner is defined %}
+banner motd #
+<banner>
+{% endif %}
+

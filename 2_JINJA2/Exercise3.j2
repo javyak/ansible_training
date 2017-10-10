@@ -1,0 +1,7 @@
+{# Using a list of hostnames created in YAML exercise #3 create Ansible
+inventory file: #}
+
+{% for host in hostname %}
+#
+{{host}} ansible_user=cisco ansible_ssh_pass=cisco
+{% endfor %}

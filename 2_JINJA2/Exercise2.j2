@@ -1,0 +1,11 @@
+{# Using a dictionary created in YAML exercise #2 that contains hostname, loopback, and interfaces (list of interface names), create the following  router configuration: #}
+
+hostname {# hostname #}
+!
+interface loopback 0
+ip address {# loopback #} 255.255.255.255
+!
+{% for interface in interfaces %}
+interface {{ interface }}
+no shutdown
+{% endfor %}

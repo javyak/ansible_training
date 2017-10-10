@@ -1,0 +1,8 @@
+# Create list of username (string) / password (string) pairs.
+---
+- username: pepe
+  password:  abc123
+- username: paco
+  password: abc124
+- username: francisco
+  password: abc125
